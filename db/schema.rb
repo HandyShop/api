@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20170309181110) do
     t.string   "name"
     t.text     "description"
     t.integer  "quantity"
-    t.decimal  "price"
+    t.decimal  "price",       precision: 8, scale: 2
     t.string   "barcode"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
