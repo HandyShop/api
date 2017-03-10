@@ -45,7 +45,7 @@ describe "POST #create" do
     expect(assigns(:market)).to be_persisted
   end
   
-  it "redirects to the created market" do
+  it "respond with http status 'created'" do
     post :create, params: {market: valid_attributes}, session: valid_session
     expect(response).to have_http_status(:created)
   end
@@ -57,12 +57,11 @@ context "with invalid params" do
     expect(assigns(:market)).to be_a_new(Market)
   end
   
-  # TODO: Discuss about what should be the error in this case
-  # it "respond with an error" do
-    #   post :create, params: {market: invalid_attributes}, session: valid_session
-    #   expect(response).to render_template("new")
-    # end
+  it "respond with an error" do
+    post :create, params: {market: invalid_attributes}, session: valid_session
+    expect(response).to have_http_status(:unprocessable_entity)
   end
+end
 end
 
 describe "PUT #update" do
@@ -84,7 +83,7 @@ describe "PUT #update" do
     expect(assigns(:market)).to eq(market)
   end
   
-  it "redirects to the market" do
+  it "respond with http status 'ok'" do
     market = Market.create! valid_attributes
     put :update, params: {id: market.to_param, market: valid_attributes}, session: valid_session
     expect(response).to have_http_status(:ok)
@@ -98,13 +97,12 @@ context "with invalid params" do
     expect(assigns(:market)).to eq(market)
   end
   
-  # TODO: Discuss about what should be the error in this case
-  # it "re-renders the 'edit' template" do
-    #   market = Market.create! valid_attributes
-    #   put :update, params: {id: market.to_param, market: invalid_attributes}, session: valid_session
-    #   expect(response).to render_template("edit")
-    # end
+  it "respond with an error" do
+    market = Market.create! valid_attributes
+    put :update, params: {id: market.to_param, market: invalid_attributes}, session: valid_session
+    expect(response).to have_http_status(:unprocessable_entity)
   end
+end
 end
 
 describe "DELETE #destroy" do
