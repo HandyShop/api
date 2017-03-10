@@ -10,4 +10,4 @@ require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
 # TODO: customize rake order
-task :default => :rubocop
+#task :default => :rubocop
