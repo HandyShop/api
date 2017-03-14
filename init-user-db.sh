@@ -12,5 +12,6 @@ psql -v ON_ERROR_STOP=1 -h localhost --username "$POSTGRES_USER" <<-EOSQL
     ALTER USER $HANDY_USER CREATEDB;
 EOSQL
 
+# Rails does this for you automatically, shouldn't be necessary.
 # CREATE DATABASE $HANDY_DB;
 # GRANT ALL PRIVILEGES ON DATABASE $HANDY_DB TO $HANDY_USER;
