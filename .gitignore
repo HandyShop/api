@@ -20,8 +20,11 @@
 .idea/
 *.iml
 
+# Ignore vscode configuration folder
+.vscode/
+
 # Ignore application configuration
 /config/application.yml
 
-# Ignore vscode configuration files
-.vscode/
+# Ignore coverage folder
+coverage/
