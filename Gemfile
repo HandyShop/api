@@ -50,7 +50,6 @@ group :test do
   gem 'simplecov', :require => false
   gem 'shoulda-matchers', '~> 3.1'
   gem 'factory_girl_rails'
-  gem 'rails-controller-testing'
   gem 'faker'
 end
 
