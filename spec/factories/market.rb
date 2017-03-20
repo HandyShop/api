@@ -1,12 +1,12 @@
 FactoryGirl.define do
   factory :market do
-    name 'Tested Market'
+    name { Faker::Name.name }
   end
-  
+
   factory :second_market, class: Market do
-    name 'Another Market'
+    name { Faker::Name.name }
   end
-  
+
   factory :invalid_market, class: Market do
     name nil
   end
