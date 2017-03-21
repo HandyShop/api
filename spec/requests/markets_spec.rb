@@ -104,7 +104,7 @@ RSpec.describe 'Markets', type: :request do
 
     context 'with non existing market' do
       it 'should respond to the markets list' do
-        non_existing_id = 7
+        non_existing_id = -1
         delete_url = get_specific_market_url(non_existing_id)
         delete delete_url, params: {id: non_existing_id}
         expect(response).to have_http_status(:not_found)
