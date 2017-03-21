@@ -14,16 +14,25 @@ RSpec.describe 'Markets', type: :request do
     end
   end
 
-  describe 'GET /show' do
-
-    it 'should retrieve the specified market successfully' do
-      market = create(:market)
-      market_url = get_specific_market_url(market.to_param)
-      get market_url
-      expect(response).to have_http_status(:ok)
-      expect(response.body).to include(market.name)
+  describe 'GET /markets/:id' do
+    context 'with an existing product' do
+      it 'should retrieve the specified market successfully' do
+        market = create(:market)
+        market_url = get_specific_market_url(market.to_param)
+        get market_url
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include(market.name)
+      end
     end
 
+    context 'with a non existing product' do
+      it 'should responds with http status not found' do
+        non_existing_id = Random.rand(1..99)
+        market_url = get_specific_market_url(non_existing_id)
+        get market_url
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 
   describe 'POST /markets' do
