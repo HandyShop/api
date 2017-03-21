@@ -49,8 +49,6 @@ group :test do
   gem 'codecov', :require => false
   gem 'simplecov', :require => false
   gem 'shoulda-matchers', '~> 3.1'
-  gem 'factory_girl_rails'
-  gem 'faker'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
