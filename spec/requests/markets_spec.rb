@@ -15,7 +15,7 @@ RSpec.describe 'Markets', type: :request do
   end
 
   describe 'GET /markets/:id' do
-    context 'with an existing product' do
+    context 'with an existing market' do
       it 'should retrieve the specified market successfully' do
         market = create(:market)
         market_url = get_specific_market_url(market.to_param)
@@ -25,7 +25,7 @@ RSpec.describe 'Markets', type: :request do
       end
     end
 
-    context 'with a non existing product' do
+    context 'with a non existing market' do
       it 'should responds with http status not found' do
         non_existing_id = Random.rand(1..99)
         market_url = get_specific_market_url(non_existing_id)
@@ -77,6 +77,16 @@ RSpec.describe 'Markets', type: :request do
         update_url = get_specific_market_url(market.to_param)
         put update_url, params: {market: another_market}
         expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context 'with a non existing market' do
+      it 'should respond with http status not_found' do
+        non_existing_id = Random.rand(1..99)
+        another_market = attributes_for(:second_market)
+        update_url = get_specific_market_url(non_existing_id)
+        put update_url, params: {market: another_market}
+        expect(response).to have_http_status(:not_found)
       end
     end
   end
