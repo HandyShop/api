@@ -10,7 +10,11 @@ class ProductsController < ApplicationController
   # GET /markets/:market_id/products/:product_id
   def show
     @product = Product.find_by(market: @market, id: params[:id])
-    render json: @product
+    if @product
+      render json: @product
+    else
+      render status: :not_found
+    end
   end
 
   # POST /markets/:market_id/products
@@ -38,7 +42,11 @@ class ProductsController < ApplicationController
   # DELETE /markets/:market_id/products/:product_id
   def destroy
     @product = Product.find_by(market: @market, id: params[:id])
-    @product.destroy
+    if @product
+      @product.destroy
+    else
+      render status: :not_found
+    end
   end
 
   private
