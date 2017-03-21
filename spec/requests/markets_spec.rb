@@ -18,7 +18,8 @@ RSpec.describe 'Markets', type: :request do
 
     it 'should retrieve the specified market successfully' do
       market = create(:market)
-      get markets_path, params: {id: market.to_param}
+      market_url = get_specific_market_url(market.to_param)
+      get market_url
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(market.name)
     end
@@ -53,7 +54,7 @@ RSpec.describe 'Markets', type: :request do
       it 'should update a market successfully' do
         market = create(:market)
         another_market = attributes_for(:second_market)
-        update_url = get_specific_market_url(markets_path, market.to_param)
+        update_url = get_specific_market_url(market.to_param)
         put update_url, params: {market: another_market}
         expect(response).to have_http_status(:ok)
         expect(response.body).to include(another_market[:name])
@@ -64,7 +65,7 @@ RSpec.describe 'Markets', type: :request do
       it 'should respond with http status unprocessable_entity' do
         market = create(:market)
         another_market = attributes_for(:invalid_market)
-        update_url = get_specific_market_url(markets_path, market.to_param)
+        update_url = get_specific_market_url(market.to_param)
         put update_url, params: {market: another_market}
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -75,7 +76,7 @@ RSpec.describe 'Markets', type: :request do
     context 'with existing market' do
       it 'should destroys the requested market' do
         market = create(:market)
-        delete_url = get_specific_market_url(markets_path, market.to_param)
+        delete_url = get_specific_market_url(market.to_param)
         expect {
           delete delete_url
         }.to change(Market, :count).by(-1)
@@ -85,7 +86,7 @@ RSpec.describe 'Markets', type: :request do
     context 'with non existing market' do
       it 'should respond to the markets list' do
         non_existing_id = 7
-        delete_url = get_specific_market_url(markets_path, non_existing_id)
+        delete_url = get_specific_market_url(non_existing_id)
         delete delete_url, params: {id: non_existing_id}
         expect(response).to have_http_status(:not_found)
       end
@@ -93,8 +94,8 @@ RSpec.describe 'Markets', type: :request do
   end
 
   private
-  def get_specific_market_url(markets_path, market_id)
-    "#{markets_path}/#{market_id}"
+  def get_specific_market_url(market_id)
+    "/markets/#{market_id}"
   end
 
 end
