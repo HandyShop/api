@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Products', type: :request do
 
+  INVALID_ID = -1
+
   before(:each) do
     @market_id = create_market_returning_id
   end
@@ -19,7 +21,7 @@ RSpec.describe 'Products', type: :request do
 
     context 'with a non existing market' do
       it 'should retrieve http status not_found' do
-        @market_id = -1
+        @market_id = INVALID_ID
         products_url = get_products_market_url(@market_id)
         get products_url
         expect(response).to have_http_status(:not_found)
@@ -40,7 +42,7 @@ RSpec.describe 'Products', type: :request do
 
     context 'with a non existing product' do
       it 'should respond with http status not_found' do
-        non_existing_id = -1
+        non_existing_id = INVALID_ID
         products_url = get_specific_product_url(@market_id, non_existing_id)
         get products_url
         expect(response).to have_http_status(:not_found)
@@ -50,7 +52,7 @@ RSpec.describe 'Products', type: :request do
     context 'with a non existing market' do
       it 'should retrieve http status not_found' do
         product = create_valid_product(@market_id)
-        @market_id = -1
+        @market_id = INVALID_ID
         products_url = get_specific_product_url(@market_id, product.to_param)
         get products_url
         expect(response).to have_http_status(:not_found)
@@ -81,7 +83,7 @@ RSpec.describe 'Products', type: :request do
 
     context 'with a non existing market' do
       it 'should retrieve http status not_found' do
-        @market_id = -1
+        @market_id = INVALID_ID
         valid_product = attributes_for(:product)
         products_url = get_products_market_url(@market_id)
         post products_url, params: {product: valid_product}
@@ -120,7 +122,7 @@ RSpec.describe 'Products', type: :request do
       it 'should retrieve http status not_found' do
         product = create_valid_product(@market_id)
         another_product = attributes_for(:second_product)
-        @market_id = -1
+        @market_id = INVALID_ID
         product_url = get_specific_product_url(@market_id, product.to_param)
         put product_url, params: {product: another_product, market_id: @market_id}
         expect(response).to have_http_status(:not_found)
@@ -142,7 +144,7 @@ RSpec.describe 'Products', type: :request do
 
     context 'with a non existing product' do
       it 'responds with http status not_found' do
-        non_existing_id = -1
+        non_existing_id = INVALID_ID
         product_url = get_specific_product_url(@market_id, non_existing_id)
         delete product_url
         expect(response).to have_http_status(:not_found)
@@ -152,7 +154,7 @@ RSpec.describe 'Products', type: :request do
     context 'with a non existing market' do
       it 'should retrieve http status not_found' do
         product = create_valid_product(@market_id)
-        @market_id = -1
+        @market_id = INVALID_ID
         product_url = get_specific_product_url(@market_id, product.to_param)
         delete product_url
         expect(response).to have_http_status(:not_found)

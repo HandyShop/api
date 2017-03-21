@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Markets', type: :request do
 
   JSON_FORMAT = 'application/json'
+  INVALID_ID = -1
 
   describe 'GET /markets' do
     it 'should retrieve the market list successfully' do
@@ -27,7 +28,7 @@ RSpec.describe 'Markets', type: :request do
 
     context 'with a non existing market' do
       it 'should responds with http status not found' do
-        non_existing_id = -1
+        non_existing_id = INVALID_ID
         market_url = get_specific_market_url(non_existing_id)
         get market_url
         expect(response).to have_http_status(:not_found)
@@ -82,7 +83,7 @@ RSpec.describe 'Markets', type: :request do
 
     context 'with a non existing market' do
       it 'should respond with http status not_found' do
-        non_existing_id = -1
+        non_existing_id = INVALID_ID
         another_market = attributes_for(:second_market)
         update_url = get_specific_market_url(non_existing_id)
         put update_url, params: {market: another_market}
@@ -104,7 +105,7 @@ RSpec.describe 'Markets', type: :request do
 
     context 'with non existing market' do
       it 'should respond to the markets list' do
-        non_existing_id = -1
+        non_existing_id = INVALID_ID
         delete_url = get_specific_market_url(non_existing_id)
         delete delete_url, params: {id: non_existing_id}
         expect(response).to have_http_status(:not_found)
