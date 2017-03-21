@@ -84,7 +84,7 @@ RSpec.describe 'Products', type: :request do
         @market_id = -1
         valid_product = attributes_for(:product)
         products_url = get_products_market_url(@market_id)
-        get products_url, params: {product: valid_product}
+        post products_url, params: {product: valid_product}
         expect(response).to have_http_status(:not_found)
       end
     end
@@ -154,7 +154,7 @@ RSpec.describe 'Products', type: :request do
         product = create_valid_product(@market_id)
         @market_id = -1
         product_url = get_specific_product_url(@market_id, product.to_param)
-        put product_url
+        delete product_url
         expect(response).to have_http_status(:not_found)
       end
     end
