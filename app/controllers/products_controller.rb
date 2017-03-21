@@ -3,15 +3,23 @@ class ProductsController < ApplicationController
 
   # GET /markets/:market_id/products
   def index
-    @products = Product.where(market: @market)
-    render json: @products
+    if @market
+      @products = Product.where(market: @market)
+      render json: @products
+    else
+      render status: :not_found
+    end
   end
 
   # GET /markets/:market_id/products/:product_id
   def show
-    @product = Product.find_by(market: @market, id: params[:id])
-    if @product
-      render json: @product
+    if @market
+      @product = Product.find_by(market: @market, id: params[:id])
+      if @product
+        render json: @product
+      else
+        render status: :not_found
+      end
     else
       render status: :not_found
     end
@@ -19,31 +27,43 @@ class ProductsController < ApplicationController
 
   # POST /markets/:market_id/products
   def create
-    @product = Product.new(product_params)
-    @market.products << @product
+    if @market
+      @product = Product.new(product_params)
+      @market.products << @product
 
-    if @product.save
-      render json: @product, status: :created
+      if @product.save
+        render json: @product, status: :created
+      else
+        render json: @product.errors, status: :unprocessable_entity
+      end
     else
-      render json: @product.errors, status: :unprocessable_entity
+      render status: :not_found
     end
   end
 
   # PATCH/PUT /markets/:market_id/products/:product_id
   def update
-    @product = Product.find_by(market: @market, id: params[:id])
-    if @product.update(product_params)
-      render json: @product
+    if @market
+      @product = Product.find_by(market: @market, id: params[:id])
+      if @product.update(product_params)
+        render json: @product
+      else
+        render json: @product.errors, status: :unprocessable_entity
+      end
     else
-      render json: @product.errors, status: :unprocessable_entity
+      render status: :not_found
     end
   end
 
   # DELETE /markets/:market_id/products/:product_id
   def destroy
-    @product = Product.find_by(market: @market, id: params[:id])
-    if @product
-      @product.destroy
+    if @market
+      @product = Product.find_by(market: @market, id: params[:id])
+      if @product
+        @product.destroy
+      else
+        render status: :not_found
+      end
     else
       render status: :not_found
     end
@@ -51,7 +71,7 @@ class ProductsController < ApplicationController
 
   private
   def set_market
-    @market = Market.find(params[:market_id])
+    @market = Market.find_by_id(params[:market_id])
   end
 
   def product_params

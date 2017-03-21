@@ -27,7 +27,7 @@ RSpec.describe 'Markets', type: :request do
 
     context 'with a non existing market' do
       it 'should responds with http status not found' do
-        non_existing_id = Random.rand(1..99)
+        non_existing_id = -1
         market_url = get_specific_market_url(non_existing_id)
         get market_url
         expect(response).to have_http_status(:not_found)
@@ -82,7 +82,7 @@ RSpec.describe 'Markets', type: :request do
 
     context 'with a non existing market' do
       it 'should respond with http status not_found' do
-        non_existing_id = Random.rand(1..99)
+        non_existing_id = -1
         another_market = attributes_for(:second_market)
         update_url = get_specific_market_url(non_existing_id)
         put update_url, params: {market: another_market}

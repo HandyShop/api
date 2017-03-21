@@ -7,12 +7,23 @@ RSpec.describe 'Products', type: :request do
   end
 
   describe 'GET /markets/:market_id/products' do
-    it 'should retrieve the product list from a market successfully' do
-      product = create_valid_product(@market_id)
-      products_url = get_products_market_url(@market_id)
-      get products_url
-      expect(response).to have_http_status(:ok)
-      expect_response_have_product(response, product)
+    context 'with an existing product and market' do
+      it 'should retrieve the product list from a market successfully' do
+        product = create_valid_product(@market_id)
+        products_url = get_products_market_url(@market_id)
+        get products_url
+        expect(response).to have_http_status(:ok)
+        expect_response_have_product(response, product)
+      end
+    end
+
+    context 'with a non existing market' do
+      it 'should retrieve http status not_found' do
+        @market_id = -1
+        products_url = get_products_market_url(@market_id)
+        get products_url
+        expect(response).to have_http_status(:not_found)
+      end
     end
   end
 
@@ -20,8 +31,8 @@ RSpec.describe 'Products', type: :request do
     context 'with an existing product' do
       it 'should retrieve a specific product from a market successfully' do
         product = create_valid_product(@market_id)
-        products_url = get_products_market_url(@market_id)
-        get products_url, params: {id: product.to_param}
+        products_url = get_specific_product_url(@market_id, product.to_param)
+        get products_url
         expect(response).to have_http_status(:ok)
         expect_response_have_product(response, product)
       end
@@ -29,13 +40,22 @@ RSpec.describe 'Products', type: :request do
 
     context 'with a non existing product' do
       it 'should respond with http status not_found' do
-        non_existing_id = Random.rand(1..99)
+        non_existing_id = -1
         products_url = get_specific_product_url(@market_id, non_existing_id)
         get products_url
         expect(response).to have_http_status(:not_found)
       end
     end
 
+    context 'with a non existing market' do
+      it 'should retrieve http status not_found' do
+        product = create_valid_product(@market_id)
+        @market_id = -1
+        products_url = get_specific_product_url(@market_id, product.to_param)
+        get products_url
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 
   describe 'POST /markets/:market_id/products' do
@@ -58,9 +78,19 @@ RSpec.describe 'Products', type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
+
+    context 'with a non existing market' do
+      it 'should retrieve http status not_found' do
+        @market_id = -1
+        valid_product = attributes_for(:product)
+        products_url = get_products_market_url(@market_id)
+        get products_url, params: {product: valid_product}
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 
-  describe 'PUT #update' do
+  describe 'PUT /markets/:market_id/products/:product_id' do
     context 'with valid params' do
       it 'updates the requested product' do
         product = create_valid_product(@market_id)
@@ -85,6 +115,17 @@ RSpec.describe 'Products', type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
+
+    context 'with a non existing market' do
+      it 'should retrieve http status not_found' do
+        product = create_valid_product(@market_id)
+        another_product = attributes_for(:second_product)
+        @market_id = -1
+        product_url = get_specific_product_url(@market_id, product.to_param)
+        put product_url, params: {product: another_product, market_id: @market_id}
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 
   describe 'DELETE /markets/:market_id/products/:product_id' do
@@ -101,13 +142,22 @@ RSpec.describe 'Products', type: :request do
 
     context 'with a non existing product' do
       it 'responds with http status not_found' do
-        non_existing_id = Random.rand(1..99)
+        non_existing_id = -1
         product_url = get_specific_product_url(@market_id, non_existing_id)
         delete product_url
         expect(response).to have_http_status(:not_found)
       end
     end
 
+    context 'with a non existing market' do
+      it 'should retrieve http status not_found' do
+        product = create_valid_product(@market_id)
+        @market_id = -1
+        product_url = get_specific_product_url(@market_id, product.to_param)
+        put product_url
+        expect(response).to have_http_status(:not_found)
+      end
+    end
   end
 
   private
