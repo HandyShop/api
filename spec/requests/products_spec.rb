@@ -96,7 +96,7 @@ RSpec.describe 'Products', type: :request do
     context 'with valid params' do
       it 'updates the requested product' do
         product = create_valid_product(@market_id)
-        another_product = attributes_for(:second_product)
+        another_product = attributes_for(:product)
         product_url = get_specific_product_url(@market_id, product.to_param)
         put product_url, params: {product: another_product, market_id: @market_id}
         product.reload
@@ -121,7 +121,7 @@ RSpec.describe 'Products', type: :request do
     context 'with a non existing market' do
       it 'should retrieve http status not_found' do
         product = create_valid_product(@market_id)
-        another_product = attributes_for(:second_product)
+        another_product = attributes_for(:product)
         @market_id = INVALID_ID
         product_url = get_specific_product_url(@market_id, product.to_param)
         put product_url, params: {product: another_product, market_id: @market_id}
