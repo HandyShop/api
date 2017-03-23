@@ -60,7 +60,7 @@ RSpec.describe 'Markets', type: :request do
     context 'with valid params' do
       it 'should update a market successfully' do
         market = create(:market)
-        another_market = attributes_for(:second_market)
+        another_market = attributes_for(:market)
         put market_path(market.to_param), params: {market: another_market}
         expect(response).to have_http_status(:ok)
         expect(response.body).to include(another_market[:name])
@@ -79,7 +79,7 @@ RSpec.describe 'Markets', type: :request do
     context 'with a non existing market' do
       it 'should respond with http status not_found' do
         non_existing_id = Random.rand(1..99)
-        another_market = attributes_for(:second_market)
+        another_market = attributes_for(:market)
         put market_path(non_existing_id), params: {market: another_market}
         expect(response).to have_http_status(:not_found)
       end
