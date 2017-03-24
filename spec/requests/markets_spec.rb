@@ -19,8 +19,7 @@ RSpec.describe 'Markets', type: :request do
     context 'with an existing market' do
       it 'should retrieve the specified market successfully' do
         market = create(:market)
-        market_url = get_specific_market_url(market.to_param)
-        get market_url
+        get market_path(market.to_param)
         expect(response).to have_http_status(:ok)
         expect(response.body).to include(market.name)
       end
@@ -29,8 +28,7 @@ RSpec.describe 'Markets', type: :request do
     context 'with a non existing market' do
       it 'should responds with http status not found' do
         non_existing_id = INVALID_ID
-        market_url = get_specific_market_url(non_existing_id)
-        get market_url
+        get market_path(non_existing_id)
         expect(response).to have_http_status(:not_found)
       end
     end
@@ -63,9 +61,8 @@ RSpec.describe 'Markets', type: :request do
     context 'with valid params' do
       it 'should update a market successfully' do
         market = create(:market)
-        another_market = attributes_for(:second_market)
-        update_url = get_specific_market_url(market.to_param)
-        put update_url, params: {market: another_market}
+        another_market = attributes_for(:market)
+        put market_path(market.to_param), params: {market: another_market}
         expect(response).to have_http_status(:ok)
         expect(response.body).to include(another_market[:name])
       end
@@ -75,8 +72,7 @@ RSpec.describe 'Markets', type: :request do
       it 'should respond with http status unprocessable_entity' do
         market = create(:market)
         another_market = attributes_for(:invalid_market)
-        update_url = get_specific_market_url(market.to_param)
-        put update_url, params: {market: another_market}
+        put market_path(market.to_param), params: {market: another_market}
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -84,9 +80,8 @@ RSpec.describe 'Markets', type: :request do
     context 'with a non existing market' do
       it 'should respond with http status not_found' do
         non_existing_id = INVALID_ID
-        another_market = attributes_for(:second_market)
-        update_url = get_specific_market_url(non_existing_id)
-        put update_url, params: {market: another_market}
+        another_market = attributes_for(:market)
+        put market_path(non_existing_id), params: {market: another_market}
         expect(response).to have_http_status(:not_found)
       end
     end
@@ -96,9 +91,8 @@ RSpec.describe 'Markets', type: :request do
     context 'with existing market' do
       it 'should destroys the requested market' do
         market = create(:market)
-        delete_url = get_specific_market_url(market.to_param)
         expect {
-          delete delete_url
+          delete market_path(market.to_param)
         }.to change(Market, :count).by(-1)
       end
     end
@@ -106,16 +100,9 @@ RSpec.describe 'Markets', type: :request do
     context 'with non existing market' do
       it 'should respond to the markets list' do
         non_existing_id = INVALID_ID
-        delete_url = get_specific_market_url(non_existing_id)
-        delete delete_url, params: {id: non_existing_id}
+        delete market_path(non_existing_id)
         expect(response).to have_http_status(:not_found)
       end
     end
   end
-
-  private
-  def get_specific_market_url(market_id)
-    "/markets/#{market_id}"
-  end
-
 end
