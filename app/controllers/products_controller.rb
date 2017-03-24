@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ProductsController < ApplicationController
   before_action :set_market
 
@@ -50,11 +51,10 @@ class ProductsController < ApplicationController
   end
 
   private
+
   def set_market
-    @market = Market.find_by_id(params[:market_id])
-    if @market.nil?
-      render status: :not_found
-    end
+    @market = Market.find_by(id: params[:market_id])
+    render status: :not_found if @market.nil?
   end
 
   def product_params

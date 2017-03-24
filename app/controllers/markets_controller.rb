@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class MarketsController < ApplicationController
   before_action :set_market, only: [:show, :update, :destroy]
 
@@ -38,12 +39,11 @@ class MarketsController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_market
-    @market = Market.find_by_id(params[:id])
-    if @market.nil?
-      render status: :not_found
-    end
+    @market = Market.find_by(id: params[:id])
+    render status: :not_found if @market.nil?
   end
 
   # Only allow a trusted parameter "white list" through.
