@@ -10,11 +10,7 @@ class MarketsController < ApplicationController
 
   # GET /markets/1
   def show
-    if @market
-      render json: @market
-    else
-      render status: :not_found
-    end
+    render json: @market
   end
 
   # POST /markets
@@ -30,24 +26,16 @@ class MarketsController < ApplicationController
 
   # PATCH/PUT /markets/1
   def update
-    if @market
-      if @market.update(market_params)
-        render json: @market
-      else
-        render json: @market.errors, status: :unprocessable_entity
-      end
+    if @market.update(market_params)
+      render json: @market
     else
-      render status: :not_found
+      render json: @market.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /markets/1
   def destroy
-    if @market
-      @market.destroy
-    else
-      render status: :not_found
-    end
+    @market.destroy
   end
 
   private
@@ -55,6 +43,7 @@ class MarketsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_market
     @market = Market.find_by(id: params[:id])
+    render status: :not_found if @market.nil?
   end
 
   # Only allow a trusted parameter "white list" through.
