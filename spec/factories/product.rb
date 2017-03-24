@@ -2,7 +2,7 @@
 FactoryGirl.define do
   factory :product do
     name { Faker::Commerce.product_name }
-    price { Faker::Commerce.price }
+    price { Faker::Commerce.price.to_d }
     quantity { Faker::Number.between(1, 10) }
     description { Faker::Commerce.product_name }
     barcode { Faker::Commerce.promotion_code }
