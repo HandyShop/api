@@ -46,8 +46,8 @@ group :development do
 end
 
 group :test do
-  gem 'codecov', :require => false
-  gem 'simplecov', :require => false
+  gem 'codecov', '>= 0.1.10', :require => false
+  gem 'simplecov', '>= 0.13.0', :require => false
   gem 'shoulda-matchers', '~> 3.1'
 end
 
