@@ -7,11 +7,11 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.2'
+gem 'rails', '~> 5.2.6', '>= 5.2.6.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 4.3', '>= 4.3.11'
 # Use Figaro as the environment variables manager
 gem 'figaro'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -30,12 +30,12 @@ gem 'figaro'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
   # Rubocop static analyzer
   gem 'rubocop', '~> 0.47.1', require: false
   gem 'rubocop-rspec', require: false
   gem 'faker'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '>= 4.8.0'
 end
 
 group :development do
